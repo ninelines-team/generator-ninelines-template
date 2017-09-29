@@ -1,0 +1,31 @@
+{
+	"name": "generator-project-template",
+	"version": "1.0.0",
+	"description": "Project template generator",
+	"author": "Dmitry Artemov <d.artemov@9-lines.com>",
+	"license": "ISC",
+	"main": "app/index.js",
+	"keywords": [
+		"autoprefixer",
+		"babel",
+		"browsersync",
+		"eslint",
+		"javascript",
+		"jquery",
+		"gulp",
+		"png-sprites",
+		"pug",
+		"pug-lint",
+		"scss",
+		"stylelint",
+		"svg-sprites",
+		"template",
+		"yeoman-generator"
+	],
+	"files": [
+		"app"
+	],
+	"dependencies": {
+		"yeoman-generator": "2.0.0"
+	}
+}

@@ -26,6 +26,6 @@
 		"app"
 	],
 	"dependencies": {
-		"yeoman-generator": "2.0.0"
+		"yeoman-generator": "2.0.1"
 	}
 }

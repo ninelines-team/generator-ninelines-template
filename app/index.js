@@ -1,98 +1,124 @@
 let Generator = require('yeoman-generator');
+let path = require('path');
 
 module.exports = class extends Generator {
 	constructor(args, opts) {
 		super(args, opts);
 
-		this.argument('name', {
-			desc: 'Project name',
+		this.argument('path', {
+			desc: 'Project path',
 			required: false,
 			type: String,
-			default: 'project-template',
+			default: '.',
 		});
 
-		this.argument('description', {
-			desc: 'Project description',
-			required: false,
-			type: String,
-			default: 'Шаблон для разработки сайтов'
+		this.destinationRoot(this.options.path);
+	}
+
+	prompting() {
+		return this.prompt([
+			{
+				type: 'input',
+				name: 'name',
+				message: 'Project name',
+				default: path.basename(this.destinationRoot()),
+			},
+			{
+				type: 'input',
+				name: 'description',
+				message: 'Project description',
+				default: '',
+			},
+			{
+				type: 'confirm',
+				name: 'npmInstall',
+				message: 'Install npm packages?',
+				default: true,
+			},
+		]).then((answers) => {
+			this.answers = answers;
 		});
 	}
 
 	writing() {
 		this.fs.copy(
 			this.templatePath('docs'),
-			this.destinationPath(`${this.options.name}/docs`)
+			this.destinationPath('docs')
 		);
 
 		this.fs.copy(
 			this.templatePath('src'),
-			this.destinationPath(`${this.options.name}/src`)
+			this.destinationPath('src'),
+			{
+				globOptions: {
+					dot: true,
+				},
+			}
 		);
 
 		this.fs.copy(
 			this.templatePath('babelrc'),
-			this.destinationPath(`${this.options.name}/.babelrc`)
+			this.destinationPath(`.babelrc`)
 		);
 
 		this.fs.copy(
 			this.templatePath('editorconfig'),
-			this.destinationPath(`${this.options.name}/.editorconfig`)
+			this.destinationPath(`.editorconfig`)
 		);
 
 		this.fs.copy(
 			this.templatePath('eslintignore'),
-			this.destinationPath(`${this.options.name}/.eslintignore`)
+			this.destinationPath(`.eslintignore`)
 		);
 
 		this.fs.copy(
 			this.templatePath('eslintrc'),
-			this.destinationPath(`${this.options.name}/.eslintrc`)
+			this.destinationPath(`.eslintrc`)
 		);
 
 		this.fs.copy(
 			this.templatePath('gitignore'),
-			this.destinationPath(`${this.options.name}/.gitignore`)
+			this.destinationPath(`.gitignore`)
 		);
 
 		this.fs.copy(
 			this.templatePath('npmrc'),
-			this.destinationPath(`${this.options.name}/.npmrc`)
+			this.destinationPath(`.npmrc`)
 		);
 
 		this.fs.copy(
 			this.templatePath('pug-lintrc.json'),
-			this.destinationPath(`${this.options.name}/.pug-lintrc.json`)
+			this.destinationPath(`.pug-lintrc.json`)
 		);
 
 		this.fs.copy(
 			this.templatePath('bitbucket-pipelines.yml'),
-			this.destinationPath(`${this.options.name}/bitbucket-pipelines.yml`)
+			this.destinationPath(`bitbucket-pipelines.yml`)
 		);
 
 		this.fs.copy(
 			this.templatePath('gulpfile.babel.js'),
-			this.destinationPath(`${this.options.name}/gulpfile.babel.js`)
+			this.destinationPath(`gulpfile.babel.js`)
 		);
 
 		this.fs.copyTpl(
 			this.templatePath('_package.json'),
-			this.destinationPath(`${this.options.name}/package.json`),
+			this.destinationPath(`package.json`),
 			{
-				name: this.options.name,
-				description: this.options.description,
+				name: this.answers.name,
+				description: this.answers.description,
 			}
 		);
 
 		this.fs.copy(
 			this.templatePath('README.md'),
-			this.destinationPath(`${this.options.name}/README.md`)
+			this.destinationPath(`README.md`)
 		);
 	}
 
 	install() {
-		this.npmInstall(null, {}, {
-			cwd: this.options.name,
-		});
+		if (this.answers.npmInstall) {
+			this.npmInstall();
+		}
 	}
 };

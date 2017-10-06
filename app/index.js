@@ -92,6 +92,11 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
+			this.templatePath('stylelintrc'),
+			this.destinationPath('.stylelintrc')
+		);
+
+		this.fs.copy(
 			this.templatePath('bitbucket-pipelines.yml'),
 			this.destinationPath(`bitbucket-pipelines.yml`)
 		);

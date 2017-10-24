@@ -1,6 +1,6 @@
 {
 	"name": "<%= name %>",
-	"version": "1.1.8",
+	"version": "1.1.9",
 	"description": "<%= description %>",
 	"scripts": {},
 	"author": "Dmitry Artemov <d.artemov@9-lines.com>",
@@ -45,11 +45,11 @@
 		"stylelint-order": "0.7.0",
 		"stylelint-scss": "2.1.0",
 		"vinyl-buffer": "1.0.0",
-		"yargs": "9.0.1"
+		"yargs": "10.0.3"
 	},
 	"dependencies": {
 		"babel-polyfill": "6.26.0",
-		"bowser": "1.8.0",
+		"bowser": "1.8.1",
 		"jquery": "3.2.1",
 		"normalize-css": "2.3.1",
 		"svg4everybody": "2.1.9"

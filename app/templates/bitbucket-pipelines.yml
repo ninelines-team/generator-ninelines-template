@@ -1,4 +1,4 @@
-image: node:9.0.0
+image: node:9.1.0
 
 pipelines:
   branches:
@@ -9,7 +9,7 @@ pipelines:
           script:
             - npm install -g aerobatic-cli gulp-cli
             - npm install
-            - gulp build --no-cache --no-notify --throw-errors
+            - gulp build --no-cache --throw-errors
             - aero deploy
   custom:
     build:
@@ -19,7 +19,7 @@ pipelines:
           script:
             - npm install -g aerobatic-cli gulp-cli
             - npm install
-            - gulp build --no-cache --no-notify --throw-errors
+            - gulp build --no-cache --throw-errors
             - aero deploy
     lint:
       - step:

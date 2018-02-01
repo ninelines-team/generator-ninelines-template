@@ -1,9 +1,9 @@
 {
-	"name": "generator-project-template",
+	"name": "generator-ninelines-template",
 	"version": "1.4.0-0",
 	"description": "Project template generator",
 	"license": "ISC",
-	"repository": "beliarh/generator-project-template",
+	"repository": "ninelines-team/generator-ninelines-template",
 	"author": "Dmitry Artemov <d.artemov@9-lines.com>",
 	"main": "app/index.js",
 	"keywords": [

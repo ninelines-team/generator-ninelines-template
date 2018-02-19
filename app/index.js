@@ -97,8 +97,8 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
-			this.templatePath('gulpfile.babel.js'),
-			this.destinationPath(`gulpfile.babel.js`)
+			this.templatePath('gulpfile.js'),
+			this.destinationPath(`gulpfile.js`)
 		);
 
 		this.fs.copyTpl(

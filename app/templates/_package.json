@@ -1,6 +1,6 @@
 {
 	"name": "<%= name %>",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "<%= description %>",
 	"scripts": {},
 	"author": "Dmitry Artemov <d.artemov@9-lines.com>",
@@ -52,7 +52,7 @@
 	"dependencies": {
 		"babel-polyfill": "6.26.0",
 		"jquery": "3.3.1",
-		"ninelines-ua-parser": "0.0.1",
+		"ninelines-ua-parser": "1.0.0",
 		"normalize-css": "2.3.1",
 		"svg4everybody": "2.1.9"
 	}

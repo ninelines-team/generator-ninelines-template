@@ -1,6 +1,6 @@
 {
 	"name": "<%= name %>",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "<%= description %>",
 	"scripts": {},
 	"author": "Dmitry Artemov <d.artemov@9-lines.com>",

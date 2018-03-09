@@ -52,11 +52,6 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
-			this.templatePath('babelrc'),
-			this.destinationPath(`.babelrc`)
-		);
-
-		this.fs.copy(
 			this.templatePath('editorconfig'),
 			this.destinationPath(`.editorconfig`)
 		);
@@ -84,6 +79,11 @@ module.exports = class extends Generator {
 		this.fs.copy(
 			this.templatePath('pug-lintrc.json'),
 			this.destinationPath(`.pug-lintrc.json`)
+		);
+
+		this.fs.copy(
+			this.templatePath('stylelintignore'),
+			this.destinationPath('.stylelintignore')
 		);
 
 		this.fs.copy(

@@ -26,6 +26,7 @@ block vars
 			applicationName: '',
 			charset: 'utf-8',
 			description: description,
+			formatDetection: '',
 			keywords: [],
 			msapplicationTileColor: '',
 			msapplicationTileImage: '',
@@ -40,6 +41,7 @@ block vars
 			ogTitle: title,
 			ogType: 'website',
 			ogUrl: '',
+			themeColor: '',
 			twitterCard: 'summary_large_image',
 			twitterSite: '',
 			twitterCreator: '',
@@ -113,17 +115,17 @@ html(class=html.classList)&attributes(html.attrs)
 			if meta.keywords.length
 				meta(name="keywords" content=Array.isArray(meta.keywords) ? meta.keywords.join(', ') : meta.keywords)
 			if meta.ogType && (meta.ogUrl || meta.ogTitle || meta.ogDescription || meta.ogImage)
-				meta(name="og:type" content=meta.ogType)
+				meta(property="og:type" content=meta.ogType)
 			if meta.ogUrl
-				meta(name="og:url" content=meta.ogUrl)
+				meta(property="og:url" content=meta.ogUrl)
 			if meta.ogLocale && (meta.ogUrl || meta.ogTitle || meta.ogDescription || meta.ogImage)
-				meta(name="og:locale" content=meta.ogLocale)
+				meta(property="og:locale" content=meta.ogLocale)
 			if meta.ogTitle
-				meta(name="og:title" content=meta.ogTitle)
+				meta(property="og:title" content=meta.ogTitle)
 			if meta.ogDescription
-				meta(name="og:description" content=meta.ogDescription)
+				meta(property="og:description" content=meta.ogDescription)
 			if meta.ogImage
-				meta(name="og:image" content=meta.ogImage)
+				meta(property="og:image" content=meta.ogImage)
 			if meta.twitterCard && (meta.twitterSite || meta.twitterCreator || meta.twitterTitle || meta.twitterDescription || meta.twitterImage)
 				meta(name="twitter:card" content=meta.twitterCard)
 			if meta.twitterSite
@@ -158,6 +160,10 @@ html(class=html.classList)&attributes(html.attrs)
 				meta(name="msapplication-square310x310logo" content=meta.msapplicationSquare310x310logo)
 			if meta.msapplicationNotification
 				meta(name="msapplication-notification" content=meta.msapplicationNotification)
+			if meta.themeColor
+				meta(name="theme-color" content=meta.themeColor)
+			if meta.formatDetection
+				meta(name="format-detection" content=meta.formatDetection)
 		title
 			= title
 		block links

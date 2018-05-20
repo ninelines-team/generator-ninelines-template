@@ -92,11 +92,6 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
-			this.templatePath('bitbucket-pipelines.yml'),
-			this.destinationPath(`bitbucket-pipelines.yml`)
-		);
-
-		this.fs.copy(
 			this.templatePath('gulpfile.js'),
 			this.destinationPath(`gulpfile.js`)
 		);

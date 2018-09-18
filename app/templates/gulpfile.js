@@ -44,6 +44,7 @@ let $ = gulpLoadPlugins({
 		'connect-history-api-fallback',
 		'cssnano',
 		'emitty',
+		'imagemin-mozjpeg',
 		'merge-stream',
 		'postcss-reporter',
 		'postcss-scss',
@@ -112,27 +113,12 @@ gulp.task('copy', () => {
 
 gulp.task('images', () => {
 	return gulp.src('src/images/**/*.*')
-		.pipe($.plumber({
-			errorHandler,
-		}))
 		.pipe($.if(argv.cache, $.newer('build/images')))
 		.pipe($.if(argv.debug, $.debug()))
-		.pipe($.imagemin([
-			$.imagemin.gifsicle({
-				interlaced: true,
-			}),
-			$.imagemin.jpegtran({
-				progressive: true,
-			}),
-			$.imagemin.optipng({
-				optimizationLevel: 3,
-			}),
-			$.imagemin.svgo(svgoConfig()),
-		]))
 		.pipe(gulp.dest('build/images'));
 });
 
-gulp.task('pngSprites', () => {
+gulp.task('sprites:png', () => {
 	const spritesData = gulp.src('src/images/sprites/png/*.png')
 		.pipe($.plumber({
 			errorHandler,
@@ -160,7 +146,7 @@ gulp.task('pngSprites', () => {
 	);
 });
 
-gulp.task('svgSprites', () => {
+gulp.task('sprites:svg', () => {
 	return gulp.src('src/images/sprites/svg/*.svg')
 		.pipe($.plumber({
 			errorHandler,
@@ -177,18 +163,6 @@ gulp.task('svgSprites', () => {
 		.pipe($.if(!argv.minifySvg, $.replace('></svg', '>\n</svg')))
 		.pipe($.rename('sprites.svg'))
 		.pipe(gulp.dest('build/images'));
-});
-
-gulp.task('svgOptimize', () => {
-	return gulp.src('src/images/**/*.svg', {
-		base: 'src/images',
-	})
-		.pipe($.plumber({
-			errorHandler,
-		}))
-		.pipe($.if(argv.debug, $.debug()))
-		.pipe($.svgmin(svgoConfig(false)))
-		.pipe(gulp.dest('src/images'));
 });
 
 gulp.task('pug', () => {
@@ -263,23 +237,12 @@ gulp.task('scss', () => {
 });
 
 gulp.task('js', () => {
-	let plugins = [];
-
-	if (argv.minifyJs) {
-		// eslint-disable-next-line new-cap
-		plugins.push(new $.uglifyjsWebpackPlugin({
-			cache: true,
-			parallel: true,
-			sourceMap: true,
-		}));
-	}
-
 	return gulp.src('src/js/main.js')
 		.pipe($.plumber({
 			errorHandler,
 		}))
 		.pipe($.webpackStream({
-			mode: 'production',
+			mode: argv.minifyJs ? 'production' : 'development',
 			devtool: 'source-map',
 			module: {
 				rules: [
@@ -290,17 +253,16 @@ gulp.task('js', () => {
 							loader: 'babel-loader',
 							options: {
 								presets: [
-									'babel-preset-env',
+									'@babel/preset-env',
 								],
 								plugins: [
-									'babel-plugin-transform-runtime',
+									'@babel/plugin-transform-runtime',
 								],
 							},
 						},
 					},
 				],
 			},
-			plugins,
 			output: {
 				filename: '[name].js',
 			},
@@ -320,7 +282,7 @@ gulp.task('js', () => {
 		.pipe(gulp.dest('build/js'));
 });
 
-gulp.task('lintPug', () => {
+gulp.task('lint:pug', () => {
 	return gulp.src([
 		'src/*.pug',
 		'src/pug/**/*.pug',
@@ -332,7 +294,7 @@ gulp.task('lintPug', () => {
 		.pipe($.pugLinter.reporter(argv.throwErrors ? 'fail' : null));
 });
 
-gulp.task('lintScss', () => {
+gulp.task('lint:scss', () => {
 	return gulp.src([
 		'src/scss/**/*.scss',
 		'!src/scss/vendor/**/*.scss',
@@ -351,7 +313,7 @@ gulp.task('lintScss', () => {
 		}));
 });
 
-gulp.task('lintJs', () => {
+gulp.task('lint:js', () => {
 	return gulp.src([
 		'*.js',
 		'src/js/**/*.js',
@@ -367,6 +329,39 @@ gulp.task('lintJs', () => {
 		}))
 		.pipe($.eslint.format())
 		.pipe($.if((file) => file.eslint && file.eslint.fixed, gulp.dest('.')));
+});
+
+gulp.task('optimize:images', () => {
+	return gulp.src('src/images/**/*.*')
+		.pipe($.plumber({
+			errorHandler,
+		}))
+		.pipe($.if(argv.debug, $.debug()))
+		.pipe($.imagemin([
+			$.imagemin.gifsicle({
+				interlaced: true,
+			}),
+			$.imagemin.optipng({
+				optimizationLevel: 3,
+			}),
+			$.imageminMozjpeg({
+				progressive: true,
+				quality: 80,
+			}),
+		]))
+		.pipe(gulp.dest('src/images'));
+});
+
+gulp.task('optimize:svg', () => {
+	return gulp.src('src/images/**/*.svg', {
+		base: 'src/images',
+	})
+		.pipe($.plumber({
+			errorHandler,
+		}))
+		.pipe($.if(argv.debug, $.debug()))
+		.pipe($.svgmin(svgoConfig(false)))
+		.pipe(gulp.dest('src/images'));
 });
 
 gulp.task('watch', () => {
@@ -460,20 +455,20 @@ gulp.task('zip', () => {
 		.pipe(gulp.dest('zip'));
 });
 
+gulp.task('lint', gulp.series(
+	'lint:pug',
+	'lint:scss',
+	'lint:js'
+));
+
 gulp.task('build', gulp.parallel(
 	'copy',
 	'images',
-	'pngSprites',
-	'svgSprites',
+	'sprites:png',
+	'sprites:svg',
 	'pug',
 	'scss',
 	'js'
-));
-
-gulp.task('lint', gulp.series(
-	'lintPug',
-	'lintScss',
-	'lintJs'
 ));
 
 gulp.task('default', gulp.series(

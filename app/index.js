@@ -52,6 +52,11 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
+			this.templatePath('babelrc'),
+			this.destinationPath(`.babelrc`)
+		);
+
+		this.fs.copy(
 			this.templatePath('editorconfig'),
 			this.destinationPath(`.editorconfig`)
 		);
@@ -108,6 +113,11 @@ module.exports = class extends Generator {
 		this.fs.copy(
 			this.templatePath('README.md'),
 			this.destinationPath(`README.md`)
+		);
+
+		this.fs.copy(
+			this.templatePath('webpack.config.js'),
+			this.destinationPath(`webpack.config.js`)
 		);
 	}
 

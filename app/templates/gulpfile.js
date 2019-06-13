@@ -113,9 +113,9 @@ gulp.task('copy', () => {
 		'src/resources/**/.*',
 		'!src/resources/**/.keep',
 	], {
-		base: 'src/resources',
-		dot: true,
-	})
+			base: 'src/resources',
+			dot: true,
+		})
 		.pipe($.if(argv.cache, $.newer('build')))
 		.pipe($.if(argv.debug, $.debug()))
 		.pipe(gulp.dest('build'));
@@ -223,25 +223,21 @@ gulp.task('scss', () => {
 		.pipe($.if(argv.debug, $.debug()))
 		.pipe($.sourcemaps.init())
 		.pipe($.sass().on('error', $.sass.logError))
-		.pipe($.postcss([
-			argv.minifyCss ?
-				$.cssnano({
-					autoprefixer: {
-						add: true,
-						browsers: ['> 0%'],
-					},
+		.pipe($.postcss(
+			[
+				$.autoprefixer({
+					add: true,
+				}),
+				argv.minifyCss && $.cssnano({
+					autoprefixer: false,
 					calc: true,
 					discardComments: {
 						removeAll: true,
 					},
 					zindex: false,
-				})
-				:
-				$.autoprefixer({
-					add: true,
-					browsers: ['> 0%'],
 				}),
-		]))
+			].filter((x) => x)
+		))
 		.pipe($.sourcemaps.write('.'))
 		.pipe(gulp.dest('build/css'));
 });
@@ -263,8 +259,9 @@ gulp.task('lint:pug', () => {
 		.pipe($.plumber({
 			errorHandler,
 		}))
-		.pipe($.pugLinter())
-		.pipe($.pugLinter.reporter(argv.throwErrors ? 'fail' : null));
+		.pipe($.pugLinter({
+			failAfterError: !!argv.throwErrors,
+		}));
 });
 
 gulp.task('lint:scss', () => {
@@ -282,8 +279,8 @@ gulp.task('lint:scss', () => {
 				throwError: argv.throwErrors,
 			}),
 		], {
-			parser: $.postcssScss,
-		}));
+				parser: $.postcssScss,
+			}));
 });
 
 gulp.task('lint:js', () => {
@@ -292,8 +289,8 @@ gulp.task('lint:js', () => {
 		'src/js/**/*.js',
 		'!src/js/vendor/**/*.js',
 	], {
-		base: '.',
-	})
+			base: '.',
+		})
 		.pipe($.plumber({
 			errorHandler,
 		}))
@@ -356,8 +353,8 @@ gulp.task('watch', () => {
 		'src/*.pug',
 		'src/pug/**/*.pug',
 	], {
-		delay: 0,
-	}, gulp.series('pug'))
+			delay: 0,
+		}, gulp.series('pug'))
 		.on('all', (event, file) => {
 			if (event === 'unlink') {
 				global.emittyPugChangedFile = undefined;
@@ -422,9 +419,9 @@ gulp.task('zip', () => {
 		'!package-lock.json',
 		'!zip/**',
 	], {
-		base: '.',
-		dot: true,
-	})
+			base: '.',
+			dot: true,
+		})
 		.pipe($.zip(`${name}_${year}-${month}-${day}_${hours}-${minutes}.zip`))
 		.pipe(gulp.dest('zip'));
 });

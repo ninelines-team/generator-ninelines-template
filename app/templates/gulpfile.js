@@ -20,7 +20,7 @@ let argv = yargs.default({
 	notify: true,
 	open: true,
 	port: 3000,
-	spa: true,
+	spa: false,
 	throwErrors: false,
 }).argv;
 

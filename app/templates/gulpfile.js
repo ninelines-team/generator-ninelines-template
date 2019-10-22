@@ -114,9 +114,9 @@ gulp.task('copy', () => {
 		'src/resources/**/.*',
 		'!src/resources/**/.keep',
 	], {
-			base: 'src/resources',
-			dot: true,
-		})
+		base: 'src/resources',
+		dot: true,
+	})
 		.pipe($.if(argv.cache, $.newer('build')))
 		.pipe($.if(argv.debug, $.debug()))
 		.pipe(gulp.dest('build'));
@@ -284,8 +284,8 @@ gulp.task('lint:scss', () => {
 				throwError: argv.throwErrors,
 			}),
 		], {
-				parser: $.postcssScss,
-			}));
+			parser: $.postcssScss,
+		}));
 });
 
 gulp.task('lint:js', () => {
@@ -294,8 +294,8 @@ gulp.task('lint:js', () => {
 		'src/js/**/*.js',
 		'!src/js/vendor/**/*.js',
 	], {
-			base: '.',
-		})
+		base: '.',
+	})
 		.pipe($.plumber({
 			errorHandler,
 		}))
@@ -358,8 +358,8 @@ gulp.task('watch', () => {
 		'src/*.pug',
 		'src/pug/**/*.pug',
 	], {
-			delay: 0,
-		}, gulp.series('pug'))
+		delay: 0,
+	}, gulp.series('pug'))
 		.on('all', (event, file) => {
 			if (event === 'unlink') {
 				global.emittyPugChangedFile = undefined;
@@ -424,9 +424,9 @@ gulp.task('zip', () => {
 		'!package-lock.json',
 		'!zip/**',
 	], {
-			base: '.',
-			dot: true,
-		})
+		base: '.',
+		dot: true,
+	})
 		.pipe($.zip(`${name}_${year}-${month}-${day}_${hours}-${minutes}.zip`))
 		.pipe(gulp.dest('zip'));
 });

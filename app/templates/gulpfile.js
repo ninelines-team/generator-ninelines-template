@@ -34,7 +34,9 @@ if (argv.ci) {
 	argv.notify = false;
 	argv.open = false;
 	argv.throwErrors = true;
+}
 
+if (argv.minifyJs) {
 	webpackConfig.mode = 'production';
 } else {
 	webpackConfig.mode = webpackConfig.mode || 'development';
@@ -224,15 +226,20 @@ gulp.task('scss', () => {
 		.pipe($.postcss([
 			argv.minifyCss ?
 				$.cssnano({
-					autoprefixer: {
-						add: true,
-						browsers: ['> 0%'],
-					},
-					calc: true,
-					discardComments: {
-						removeAll: true,
-					},
-					zindex: false,
+					preset: [
+						'advanced',
+						{
+							autoprefixer: {
+								add: true,
+								browsers: ['> 0%'],
+							},
+							calc: true,
+							discardComments: {
+								removeAll: true,
+							},
+							zindex: false,
+						},
+					],
 				})
 				:
 				$.autoprefixer({

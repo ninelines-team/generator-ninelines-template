@@ -1,10 +1,10 @@
 {
 	"name": "generator-ninelines-template",
-	"version": "2.7.7-6",
+	"version": "3.0.0-0",
 	"description": "Project template generator",
-	"license": "ISC",
 	"repository": "ninelines-team/generator-ninelines-template",
-	"author": "Dmitry Artemov <d.artemov@9-lines.com>",
+	"author": "Ninelines Agency <info@ninelines.agency>",
+	"license": "ISC",
 	"main": "app/index.js",
 	"keywords": [
 		"autoprefixer",
@@ -21,12 +21,13 @@
 		"stylelint",
 		"svg-sprites",
 		"template",
+		"husky",
 		"yeoman-generator"
 	],
 	"files": [
 		"app"
 	],
 	"dependencies": {
-		"yeoman-generator": "^3.1.1"
+		"yeoman-generator": "^5.2.0"
 	}
 }

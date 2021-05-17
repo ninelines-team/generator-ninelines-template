@@ -52,6 +52,16 @@ module.exports = class extends Generator {
 		);
 
 		this.fs.copy(
+			this.templatePath('husky'),
+			this.destinationPath('.husky'),
+			{
+				globOptions: {
+					dot: true,
+				},
+			}
+		);
+
+		this.fs.copy(
 			this.templatePath('babelrc'),
 			this.destinationPath(`.babelrc`)
 		);

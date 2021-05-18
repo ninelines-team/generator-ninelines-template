@@ -138,7 +138,7 @@ module.exports = class extends Generator {
 
 	install() {
 		if (this.answers.npmInstall) {
-			this.npmInstall();
+			this.spawnCommandSync('npm', ['install']);
 		}
 	}
 };

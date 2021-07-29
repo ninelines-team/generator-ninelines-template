@@ -4,6 +4,7 @@ let yargs = require('yargs');
 let path = require('path');
 let del = require('del');
 let webpackConfig = require('./webpack.config');
+let sass = require('gulp-sass')(require('node-sass'));
 
 let emittyPug;
 let errorHandler;
@@ -21,6 +22,7 @@ let argv = yargs.default({
 	port: 3000,
 	spa: false,
 	throwErrors: false,
+	robots: true,
 }).argv;
 
 argv.minify = !!argv.minify;
@@ -241,7 +243,7 @@ gulp.task('scss', () => {
 		}))
 		.pipe($.if(argv.debug, $.debug()))
 		.pipe($.sourcemaps.init())
-		.pipe($.sass().on('error', $.sass.logError))
+		.pipe(sass().on('error', sass.logError))
 		.pipe($.postcss(postcssPlugins))
 		.pipe($.sourcemaps.write('.'))
 		.pipe(gulp.dest('build/css'));
@@ -457,6 +459,10 @@ gulp.task('share', () => {
 	]);
 });
 
+gulp.task('robots', () => {
+	return !argv.robots ? del(['./build/robots.txt']) : Promise.resolve();
+});
+
 gulp.task('lint', gulp.series(
 	'lint:pug',
 	'lint:scss',
@@ -467,6 +473,7 @@ gulp.task('build', gulp.series(
 	'copy',
 	'pug',
 	'share',
+	'robots',
 	gulp.parallel(
 		'images',
 		'sprites:png',
